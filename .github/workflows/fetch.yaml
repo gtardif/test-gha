@@ -1,0 +1,46 @@
+name: Fetch Hub
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *" # at minute 0 every hour
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    outputs:
+      modified_files: ${{ steps.count_modified_files.outputs.modified_files }}
+    env:
+      FORCE_UPDATE: ${{ github.event.inputs.force_update }}
+      EXTENSION_REPO: ${{ github.event.inputs.extension }}
+    steps:
+      - name: Checkout code (main)
+        uses: actions/checkout@v3
+
+      - name: Modify files
+        run: echo "test" >>README.md
+
+      - name: Count modified files
+        id: count_modified_files
+        run: |
+          git diff --name-only | wc -l
+          echo "::set-output name=modified_files::$(git diff --name-only | wc -l)"
+
+      - name: Commit and push extension updates to the repo (if any)
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git status
+          git add .
+          git diff --cached -- out/extensions
+          git status
+          git commit -m "[GHA] - test update" || true
+          git push
+  trigger-s3-sync:
+    needs: fetch
+    if: ${{needs.fetch.outputs.modified_files!='0'}}
+    uses: ./.github/workflows/s3sync.yaml
+
+  test-next-job:
+    needs: fetch
+    run: echo ${{needs.fetch.outputs.modified_files}}

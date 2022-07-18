@@ -1,0 +1,14 @@
+name: S3 sync
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  s3sync:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Run
+        run: |
+          echo "S3 synchronisation"
