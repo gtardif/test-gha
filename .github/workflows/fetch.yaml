@@ -2,8 +2,6 @@ name: Fetch Hub
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 * * * *" # at minute 0 every hour
 
 jobs:
   fetch:

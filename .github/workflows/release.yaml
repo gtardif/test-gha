@@ -1,0 +1,20 @@
+run-name: Release ${{ inputs.tag }} by @${{ github.actor }}
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch"
+        required: true
+        default: "main"
+      tag:
+        description: "Release Tag"
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_WORKFLOW_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Set up Go 1.17
+        run: echo test release
