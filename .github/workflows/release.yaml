@@ -1,3 +1,4 @@
+name: Release
 run-name: Release ${{ inputs.tag }} by @${{ github.actor }}
 on:
   workflow_dispatch:
