@@ -3,8 +3,8 @@ on: [push]
 jobs:
   hello_world_job:
     runs-on: macOS-latest
-    name: A job to say hello
+    name: install Docker desktop
     steps:
       - id: start_desktop
-        uses: gtardif/desktop-action@0.0.4-beta-2
+        uses: gtardif/desktop-action/start@0.0.4-beta-3
       - run: docker version
