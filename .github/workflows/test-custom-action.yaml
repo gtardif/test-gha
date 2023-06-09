@@ -6,5 +6,5 @@ jobs:
     name: install Docker desktop
     steps:
       - id: start_desktop
-        uses: gtardif/desktop-action/start@0.0.4-beta-3
+        uses: docker/desktop-action/start@v0.0.1
       - run: docker version
